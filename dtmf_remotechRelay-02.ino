@@ -20,11 +20,12 @@ unsigned char Q_dat = 0x00;
 unsigned char STDat_cnt = 0x00;
 unsigned char Decod_finished = 0x00;
 
+/*The following four pins is matching to the four buttons on the remotecontroller 315MHz(SKU:FIT0355))*/
 /*以下四个管脚定义，对应遥控器上的四个按键(遥控器为推荐的无线遥控器315MHz(SKU:FIT0355))*/
-int D1 = 8;    //解码芯片数字输出管脚1  
-int D2 = 9;    //解码芯片数字输出管脚2 
-int D3 = 10;   //解码芯片数字输出管脚3  
-int D4 = 11;   //解码芯片数字输出管脚4  
+int D1 = 8;    //Decode pin 1 解码芯片数字输出管脚1  
+int D2 = 9;    //Decode pin 2 解码芯片数字输出管脚2 
+int D3 = 10;   //Decode pin 3 解码芯片数字输出管脚3  
+int D4 = 11;   //Decode pin 4 解码芯片数字输出管脚4  
 int ledPin = 13;   //接收指示灯
 
 volatile int state = LOW; 
@@ -86,12 +87,12 @@ void setup()
     
     Serial.begin(9600);
     
-      pinMode(D4, INPUT);  //分别初始化为输入端口，读取解码芯片输出管脚的电平
+      pinMode(D4, INPUT);  //Initialize input pin, for decoder output 分别初始化为输入端口，读取解码芯片输出管脚的电平
       pinMode(D2, INPUT);  
       pinMode(D1, INPUT);   
       pinMode(D3, INPUT);  
       pinMode(ledPin, OUTPUT);  
-      attachInterrupt(1,blink,RISING); //数字口3，中断1，对应解码芯片的接收中断管脚  
+      attachInterrupt(1,blink,RISING); //Brake out 数字口3，中断1，对应解码芯片的接收中断管脚  
       digitalWrite(ledPin, LOW);
 
     
@@ -104,14 +105,14 @@ void setup()
 void loop()
 {
 
-if(state!=LOW)    //如果接收到遥控器的命令，则进入该语句
+if(state!=LOW)    //If receive command from remote controller 如果接收到遥控器的命令，则进入该语句
      {
        state=LOW;
-       delay(1);   //适当延时，等待管脚电平稳定
+       delay(1);   //Wait tail the level is stable 适当延时，等待管脚电平稳定
        digitalWrite(ledPin, HIGH);
 
        
-       Serial.print(digitalRead(D4));  //分别读取解码芯片输出管脚的电平，并打印出来    
+       Serial.print(digitalRead(D4));  //Read the decoded level and print them out 分别读取解码芯片输出管脚的电平，并打印出来    
        Serial.print(digitalRead(D2));
        Serial.print(digitalRead(D1));
        Serial.println(digitalRead(D3) );
